@@ -1,4 +1,43 @@
 # terraform-aws-alb
+
+This Terraform module provides a flexible and production-ready solution for deploying an **AWS Application Load Balancer (ALB)**. It handles the creation of the ALB, target groups, listeners, and a dedicated security group with configurable ingress/egress rules for enhanced security.
+
+## Features
+
+- **Security First**: Automatically creates a dedicated security group for the ALB with strict rules for listener access and target communication.
+- **Flexible Networking**: Supports both internal and external (public-facing) load balancers.
+- **Protocol Support**: Fully supports HTTP and HTTPS (ACM certificate required for HTTPS) listeners.
+- **Health Checks**: Configurable health checks for the target group to ensure traffic is only routed to healthy instances.
+- **Scalability**: Designed to be integrated with existing VPCs and subnets.
+- **Production Ready**: Includes advanced settings like deletion protection, HTTP/2, and drop invalid headers.
+
+## Usage
+
+```hcl
+module "alb" {
+  source = "smartao/terraform-aws-alb/aws"
+  version = "~> 1.0.0"
+
+  name_prefix       = "app-production"
+  environment       = "prod"
+  vpc_id            = "vpc-xxxxxxxxxxxx"
+  vpc_cidr_block    = "10.0.0.0/16"
+  private_subnet_ids = ["subnet-xxxxxxxxxxxx", "subnet-yyyyyyyyyyyy"]
+
+  listener_port     = 80
+  listener_protocol = "HTTP"
+
+  target_group_port     = 80
+  target_group_protocol = "HTTP"
+
+  common_tags = {
+    Project   = "Nexus"
+    Owner     = "DevOps Team"
+    CostCenter = "CO-12345"
+  }
+}
+```
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
