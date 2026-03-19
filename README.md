@@ -1,8 +1,10 @@
-# terraform-aws-alb
+# 📦 terraform-aws-alb
 
 This Terraform module provides a flexible and production-ready solution for deploying an **AWS Application Load Balancer (ALB)**. It handles the creation of the ALB, target groups, listeners, and a dedicated security group with configurable ingress/egress rules for enhanced security.
 
-## Features
+This module is designed for reuse through the HashiCorp Registry and provides a robust starting point for exposing applications within your VPC.
+
+## ⚙️ Features
 
 - **Security First**: Automatically creates a dedicated security group for the ALB with strict rules for listener access and target communication.
 - **Flexible Networking**: Supports both internal and external (public-facing) load balancers.
@@ -11,7 +13,16 @@ This Terraform module provides a flexible and production-ready solution for depl
 - **Scalability**: Designed to be integrated with existing VPCs and subnets.
 - **Production Ready**: Includes advanced settings like deletion protection, HTTP/2, and drop invalid headers.
 
-## Usage
+## 🏗️ Architecture
+
+The module creates:
+
+- 1 Application Load Balancer
+- 1 Dedicated Security Group (with configurable ingress/egress rules)
+- 1 Target Group (Instance-based)
+- 1 Listener (HTTP or HTTPS)
+
+## 🚀 Quick Start
 
 ```hcl
 module "alb" {
@@ -37,6 +48,58 @@ module "alb" {
   }
 }
 ```
+
+## 📘 Example Usage
+
+If you want to test the module from this repository checkout, see the local example in [examples/simple/main.tf](examples/simple/main.tf).
+
+You can run it with:
+
+```bash
+cd examples/simple
+terraform init
+terraform plan
+```
+
+Additional notes for the example are documented in [examples/simple/README.md](examples/simple/README.md).
+
+## 📑 Requirements and Assumptions
+
+- `private_subnet_ids` must contain at least two subnets in different Availability Zones.
+- `name_prefix` must be 32 characters or fewer.
+- `listener_protocol` and `target_group_protocol` must be either `HTTP` or `HTTPS`.
+- `health_check_path` must start with `/`.
+- `health_check_timeout` must be less than `health_check_interval`.
+- When using `HTTPS`, a valid `certificate_arn` must be provided.
+- At least one security group must be attached (either created by the module or provided via `security_group_ids`).
+
+## 🏷️ Tagging
+
+All resources receive these baseline tags:
+
+- `Environment = var.environment`
+- `Name = "${var.name_prefix}-..."`
+- Any additional tags provided in `var.common_tags`
+
+## 📄 Operational Notes
+
+- **Health Checks**: Are performed by the ALB. Ensure your application is configured to respond on the path and port specified.
+- **Security Groups**: By default, the module creates a security group that allows traffic from the VPC CIDR or specific CIDRs/SGs you provide.
+- **ACM Certificates**: For HTTPS, you must have an existing certificate in AWS Certificate Manager.
+- **Deletion Protection**: Recommended for production environments.
+
+## 🧪 Tests
+
+This repository currently includes example configurations that can be used for manual verification. Automated tests can be executed if configured:
+
+```bash
+terraform init
+terraform test
+```
+
+## 📜 License
+
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
