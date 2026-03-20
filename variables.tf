@@ -36,8 +36,8 @@ variable "name_prefix" {
   type        = string
 
   validation {
-    condition     = length(var.name_prefix) <= 32
-    error_message = "VALIDATION: name_prefix must be <= 32 characters."
+    condition     = length(var.name_prefix) <= 25
+    error_message = "VALIDATION: name_prefix must be <= 25 characters to ensure derived resource names (like Target Groups) stay within AWS's 32-character limit."
   }
 }
 
