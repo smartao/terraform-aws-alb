@@ -20,13 +20,13 @@ variable "security_group_ids" {
   }
 }
 
-variable "private_subnet_ids" {
-  description = "List of private subnet IDs for application instances and internal ALB"
+variable "subnet_ids" {
+  description = "A list of subnet IDs to attach to the Load Balancer. Use public subnets for public-facing LBs and private subnets for internal LBs."
   type        = list(string)
 
   validation {
-    condition     = length(var.private_subnet_ids) >= 2
-    error_message = "VALIDATION: private_subnet_ids must contain at least two private subnets in different Availability Zones."
+    condition     = length(var.subnet_ids) >= 2
+    error_message = "VALIDATION: subnet_ids must contain at least two subnets in different Availability Zones."
   }
 }
 

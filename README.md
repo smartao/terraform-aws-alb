@@ -33,7 +33,7 @@ module "alb" {
   environment       = "prod"
   vpc_id            = "vpc-xxxxxxxxxxxx"
   vpc_cidr_block    = "10.0.0.0/16"
-  private_subnet_ids = ["subnet-xxxxxxxxxxxx", "subnet-yyyyyyyyyyyy"]
+  subnet_ids         = ["subnet-xxxxxxxxxxxx", "subnet-yyyyyyyyyyyy"]
 
   listener_port     = 80
   listener_protocol = "HTTP"
@@ -65,7 +65,7 @@ Additional notes for the example are documented in [examples/simple/README.md](e
 
 ## 📑 Requirements and Assumptions
 
-- `private_subnet_ids` must contain at least two subnets in different Availability Zones.
+- `subnet_ids` must contain at least two subnets in different Availability Zones.
 - `name_prefix` must be 25 characters or fewer (to accommodate derived AWS resource names).
 - `listener_protocol` and `target_group_protocol` must be either `HTTP` or `HTTPS`.
 - `target_type` must be either `instance`, `ip`, or `lambda`.
@@ -156,7 +156,7 @@ No modules.
 | <a name="input_listener_port"></a> [listener\_port](#input\_listener\_port) | The port on which the ALB listener accepts connections | `number` | n/a | yes |
 | <a name="input_listener_protocol"></a> [listener\_protocol](#input\_listener\_protocol) | The protocol used by the ALB listener (e.g., HTTP, HTTPS) | `string` | n/a | yes |
 | <a name="input_name_prefix"></a> [name\_prefix](#input\_name\_prefix) | Prefix for naming resources | `string` | n/a | yes |
-| <a name="input_private_subnet_ids"></a> [private\_subnet\_ids](#input\_private\_subnet\_ids) | List of private subnet IDs for application instances and internal ALB | `list(string)` | n/a | yes |
+| <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | A list of subnet IDs to attach to the Load Balancer. Use public subnets for public-facing LBs and private subnets for internal LBs. | `list(string)` | n/a | yes |
 | <a name="input_security_group_ids"></a> [security\_group\_ids](#input\_security\_group\_ids) | Additional security group IDs to attach to the ALB, or the full list when create\_security\_group is false | `list(string)` | `[]` | no |
 | <a name="input_ssl_policy"></a> [ssl\_policy](#input\_ssl\_policy) | SSL policy for the HTTPS listener | `string` | `"ELBSecurityPolicy-TLS13-1-2-2021-06"` | no |
 | <a name="input_target_group_port"></a> [target\_group\_port](#input\_target\_group\_port) | The port on which the application targets receive traffic | `number` | n/a | yes |

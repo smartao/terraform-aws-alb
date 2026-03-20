@@ -69,7 +69,7 @@ resource "aws_lb" "alb" {
   internal                   = var.internal
   load_balancer_type         = "application"
   security_groups            = local.alb_security_group_ids
-  subnets                    = var.private_subnet_ids
+  subnets                    = var.subnet_ids
   idle_timeout               = var.alb_idle_timeout
   enable_deletion_protection = var.enable_deletion_protection
   drop_invalid_header_fields = var.drop_invalid_header_fields
