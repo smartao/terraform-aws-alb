@@ -114,7 +114,7 @@ This project is licensed under the MIT License. See [LICENSE](LICENSE) for detai
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.37.0 |
 
 ## Modules
 
@@ -156,9 +156,9 @@ No modules.
 | <a name="input_listener_port"></a> [listener\_port](#input\_listener\_port) | The port on which the ALB listener accepts connections | `number` | n/a | yes |
 | <a name="input_listener_protocol"></a> [listener\_protocol](#input\_listener\_protocol) | The protocol used by the ALB listener (e.g., HTTP, HTTPS) | `string` | n/a | yes |
 | <a name="input_name_prefix"></a> [name\_prefix](#input\_name\_prefix) | Prefix for naming resources | `string` | n/a | yes |
-| <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | A list of subnet IDs to attach to the Load Balancer. Use public subnets for public-facing LBs and private subnets for internal LBs. | `list(string)` | n/a | yes |
 | <a name="input_security_group_ids"></a> [security\_group\_ids](#input\_security\_group\_ids) | Additional security group IDs to attach to the ALB, or the full list when create\_security\_group is false | `list(string)` | `[]` | no |
 | <a name="input_ssl_policy"></a> [ssl\_policy](#input\_ssl\_policy) | SSL policy for the HTTPS listener | `string` | `"ELBSecurityPolicy-TLS13-1-2-2021-06"` | no |
+| <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | A list of subnet IDs to attach to the Load Balancer. Use public subnets for public-facing LBs and private subnets for internal LBs. | `list(string)` | n/a | yes |
 | <a name="input_target_group_port"></a> [target\_group\_port](#input\_target\_group\_port) | The port on which the application targets receive traffic | `number` | n/a | yes |
 | <a name="input_target_group_protocol"></a> [target\_group\_protocol](#input\_target\_group\_protocol) | The protocol used by the ALB target group and health checks (e.g., HTTP, HTTPS) | `string` | n/a | yes |
 | <a name="input_target_type"></a> [target\_type](#input\_target\_type) | The type of target that you must specify when registering targets with this target group. (e.g., instance, ip, lambda) | `string` | `"instance"` | no |
@@ -172,6 +172,7 @@ No modules.
 |------|-------------|
 | <a name="output_alb_arn"></a> [alb\_arn](#output\_alb\_arn) | The ARN of the Application Load Balancer |
 | <a name="output_alb_dns_name"></a> [alb\_dns\_name](#output\_alb\_dns\_name) | The DNS name of the Application Load Balancer |
+| <a name="output_alb_listener_arn"></a> [alb\_listener\_arn](#output\_alb\_listener\_arn) | The ARN of the ALB Listener |
 | <a name="output_app_target_group_arn"></a> [app\_target\_group\_arn](#output\_app\_target\_group\_arn) | The ARN of the ALB Target Group for the application |
 | <a name="output_sg_alb_id"></a> [sg\_alb\_id](#output\_sg\_alb\_id) | The ID of the Security Group for the Application Load Balancer |
 <!-- END_TF_DOCS -->

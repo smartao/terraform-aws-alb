@@ -17,3 +17,8 @@ output "sg_alb_id" {
   description = "The ID of the Security Group for the Application Load Balancer"
   value       = var.create_security_group ? aws_security_group.sg_alb[0].id : var.security_group_ids[0]
 }
+
+output "alb_listener_arn" {
+  description = "The ARN of the ALB Listener"
+  value       = aws_lb_listener.app_listener.arn
+}
