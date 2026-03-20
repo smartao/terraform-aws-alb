@@ -66,7 +66,7 @@ Additional notes for the example are documented in [examples/simple/README.md](e
 ## 📑 Requirements and Assumptions
 
 - `private_subnet_ids` must contain at least two subnets in different Availability Zones.
-- `name_prefix` must be 32 characters or fewer.
+- `name_prefix` must be 25 characters or fewer (to accommodate derived AWS resource names).
 - `listener_protocol` and `target_group_protocol` must be either `HTTP` or `HTTPS`.
 - `health_check_path` must start with `/`.
 - `health_check_timeout` must be less than `health_check_interval`.
