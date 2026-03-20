@@ -146,6 +146,17 @@ variable "unhealthy_threshold" {
   }
 }
 
+variable "target_type" {
+  description = "The type of target that you must specify when registering targets with this target group. (e.g., instance, ip, lambda)"
+  type        = string
+  default     = "instance"
+
+  validation {
+    condition     = contains(["instance", "ip", "lambda"], var.target_type)
+    error_message = "VALIDATION: target_type must be either 'instance', 'ip', or 'lambda'."
+  }
+}
+
 variable "alb_idle_timeout" {
   description = "Time in seconds that the connection is allowed to be idle"
   type        = number

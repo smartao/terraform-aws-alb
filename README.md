@@ -19,7 +19,7 @@ The module creates:
 
 - 1 Application Load Balancer
 - 1 Dedicated Security Group (with configurable ingress/egress rules)
-- 1 Target Group (Instance-based)
+- 1 Target Group (Instance, IP, or Lambda)
 - 1 Listener (HTTP or HTTPS)
 
 ## 🚀 Quick Start
@@ -68,6 +68,7 @@ Additional notes for the example are documented in [examples/simple/README.md](e
 - `private_subnet_ids` must contain at least two subnets in different Availability Zones.
 - `name_prefix` must be 25 characters or fewer (to accommodate derived AWS resource names).
 - `listener_protocol` and `target_group_protocol` must be either `HTTP` or `HTTPS`.
+- `target_type` must be either `instance`, `ip`, or `lambda`.
 - `health_check_path` must start with `/`.
 - `health_check_timeout` must be less than `health_check_interval`.
 - When using `HTTPS`, a valid `certificate_arn` must be provided.
@@ -160,6 +161,7 @@ No modules.
 | <a name="input_ssl_policy"></a> [ssl\_policy](#input\_ssl\_policy) | SSL policy for the HTTPS listener | `string` | `"ELBSecurityPolicy-TLS13-1-2-2021-06"` | no |
 | <a name="input_target_group_port"></a> [target\_group\_port](#input\_target\_group\_port) | The port on which the application targets receive traffic | `number` | n/a | yes |
 | <a name="input_target_group_protocol"></a> [target\_group\_protocol](#input\_target\_group\_protocol) | The protocol used by the ALB target group and health checks (e.g., HTTP, HTTPS) | `string` | n/a | yes |
+| <a name="input_target_type"></a> [target\_type](#input\_target\_type) | The type of target that you must specify when registering targets with this target group. (e.g., instance, ip, lambda) | `string` | `"instance"` | no |
 | <a name="input_unhealthy_threshold"></a> [unhealthy\_threshold](#input\_unhealthy\_threshold) | Number of consecutive failed health checks required before considering a target unhealthy | `number` | `2` | no |
 | <a name="input_vpc_cidr_block"></a> [vpc\_cidr\_block](#input\_vpc\_cidr\_block) | The VPC CIDR block used as a fallback when explicit ALB security group CIDR rules are not provided | `string` | n/a | yes |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | The ID of the VPC | `string` | n/a | yes |

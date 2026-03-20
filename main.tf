@@ -89,7 +89,7 @@ resource "aws_lb_target_group" "app_target_group" {
   port        = var.target_group_port
   protocol    = var.target_group_protocol
   vpc_id      = var.vpc_id
-  target_type = "instance"
+  target_type = var.target_type
 
   health_check {
     path                = var.health_check_path
