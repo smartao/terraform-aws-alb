@@ -3,19 +3,23 @@
 mock_provider "aws" {}
 
 variables {
-  vpc_id             = "vpc-12345678"
-  subnet_ids         = ["subnet-12345678", "subnet-87654321"]
-  name_prefix        = "test-alb"
-  environment        = "test"
-  listener_port      = 80
-  listener_protocol  = "HTTP"
-  target_group_port  = 80
-  target_group_protocol = "HTTP"
+  vpc_id                      = "vpc-12345678"
+  allowed_ingress_cidr_blocks = ["10.0.0.0/16"]
+  allowed_egress_cidr_blocks  = ["10.0.0.0/16"]
+  subnet_ids                  = ["subnet-12345678", "subnet-87654321"]
+  name_prefix                 = "test-alb"
+  environment                 = "test"
+  listener_port               = 80
+  listener_protocol           = "HTTP"
+  target_group_port           = 80
+  target_group_protocol       = "HTTP"
   common_tags = {
     Project   = "Testing"
     ManagedBy = "Terraform-Test"
   }
 }
+
+
 
 run "validate_defaults_and_resources" {
   command = plan
