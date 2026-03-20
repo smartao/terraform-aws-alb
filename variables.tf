@@ -193,12 +193,13 @@ variable "enable_http2" {
 }
 
 variable "vpc_cidr_block" {
-  description = "The VPC CIDR block used as a fallback when explicit ALB security group CIDR rules are not provided"
+  description = "The VPC CIDR block used as a fallback when explicit ALB security group CIDR rules are not provided. If not provided, it will be automatically resolved from the vpc_id."
   type        = string
+  default     = null
 
   validation {
-    condition     = can(cidrnetmask(var.vpc_cidr_block))
-    error_message = "VALIDATION: All vpc_cidr_block must be valid CIDRs."
+    condition     = var.vpc_cidr_block == null ? true : can(cidrnetmask(var.vpc_cidr_block))
+    error_message = "VALIDATION: vpc_cidr_block must be a valid CIDR if provided."
   }
 }
 

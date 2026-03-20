@@ -32,8 +32,7 @@ module "alb" {
   name_prefix       = "app-production"
   environment       = "prod"
   vpc_id            = "vpc-xxxxxxxxxxxx"
-  vpc_cidr_block    = "10.0.0.0/16"
-  subnet_ids         = ["subnet-xxxxxxxxxxxx", "subnet-yyyyyyyyyyyy"]
+  subnet_ids        = ["subnet-xxxxxxxxxxxx", "subnet-yyyyyyyyyyyy"]
 
   listener_port     = 80
   listener_protocol = "HTTP"
@@ -131,6 +130,7 @@ No modules.
 | [aws_security_group_rule.allow_alb_to_app_targets](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.allow_http_from_cidrs_to_alb](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.allow_http_from_sgs_to_alb](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_vpc.selected](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc) | data source |
 
 ## Inputs
 
@@ -163,7 +163,7 @@ No modules.
 | <a name="input_target_group_protocol"></a> [target\_group\_protocol](#input\_target\_group\_protocol) | The protocol used by the ALB target group and health checks (e.g., HTTP, HTTPS) | `string` | n/a | yes |
 | <a name="input_target_type"></a> [target\_type](#input\_target\_type) | The type of target that you must specify when registering targets with this target group. (e.g., instance, ip, lambda) | `string` | `"instance"` | no |
 | <a name="input_unhealthy_threshold"></a> [unhealthy\_threshold](#input\_unhealthy\_threshold) | Number of consecutive failed health checks required before considering a target unhealthy | `number` | `2` | no |
-| <a name="input_vpc_cidr_block"></a> [vpc\_cidr\_block](#input\_vpc\_cidr\_block) | The VPC CIDR block used as a fallback when explicit ALB security group CIDR rules are not provided | `string` | n/a | yes |
+| <a name="input_vpc_cidr_block"></a> [vpc\_cidr\_block](#input\_vpc\_cidr\_block) | The VPC CIDR block used as a fallback when explicit ALB security group CIDR rules are not provided. If not provided, it will be automatically resolved from the vpc\_id. | `string` | `null` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | The ID of the VPC | `string` | n/a | yes |
 
 ## Outputs

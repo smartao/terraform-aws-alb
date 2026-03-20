@@ -4,7 +4,6 @@ mock_provider "aws" {}
 
 variables {
   vpc_id             = "vpc-12345678"
-  vpc_cidr_block     = "10.0.0.0/16"
   subnet_ids         = ["subnet-12345678", "subnet-87654321"]
   name_prefix        = "test-alb"
   environment        = "test"
