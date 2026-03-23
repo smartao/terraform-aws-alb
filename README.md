@@ -1,3 +1,5 @@
+![license](https://img.shields.io/badge/License-MIT-orange?style=flat-square)
+
 # 📦 terraform-aws-alb
 
 This Terraform module provides a flexible and production-ready solution for deploying an **AWS Application Load Balancer (ALB)**. It handles the creation of the ALB, target groups, listeners, and a dedicated security group with configurable ingress/egress rules for enhanced security.
