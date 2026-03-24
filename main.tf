@@ -3,19 +3,6 @@ data "aws_vpc" "selected" {
   id = var.vpc_id
 }
 
-locals {
-  # Defines which CIDR blocks are allowed to access the ALB. 
-  # If 'allowed_ingress_cidr_blocks' is empty, it defaults to the entire VPC CIDR.
-  alb_ingress_cidr_blocks = length(var.allowed_ingress_cidr_blocks) > 0 ? var.allowed_ingress_cidr_blocks : [coalesce(var.vpc_cidr_block, data.aws_vpc.selected.cidr_block)]
-
-  # Defines which CIDR blocks the ALB can send traffic to (egress).
-  # If 'allowed_egress_cidr_blocks' is empty, it defaults to the entire VPC CIDR.
-  alb_egress_cidr_blocks = length(var.allowed_egress_cidr_blocks) > 0 ? var.allowed_egress_cidr_blocks : [coalesce(var.vpc_cidr_block, data.aws_vpc.selected.cidr_block)]
-
-  # Consolidates the security group IDs for the ALB.
-  # If 'create_security_group' is true, it includes the newly created SG along with any extra SGs provided.
-  alb_security_group_ids = var.create_security_group ? concat([aws_security_group.sg_alb[0].id], var.security_group_ids) : var.security_group_ids
-}
 
 # SG - Security Group for Application Load Balancer (ALB)
 resource "aws_security_group" "sg_alb" {
@@ -126,12 +113,16 @@ resource "aws_lb_target_group" "app_target_group" {
 }
 
 
-resource "aws_lb_listener" "app_listener" {
+resource "aws_lb_listener" "alb_listener" {
+  for_each = local.listeners
+
   load_balancer_arn = aws_lb.alb.arn
-  port              = var.listener_port
-  protocol          = var.listener_protocol
-  certificate_arn   = var.listener_protocol == "HTTPS" ? var.certificate_arn : null
-  ssl_policy        = var.listener_protocol == "HTTPS" ? var.ssl_policy : null
+  port              = each.value.port
+  protocol          = each.value.protocol
+
+  certificate_arn = contains(local.tls_protocols, each.value.protocol) ? var.certificate_arn : null
+
+  ssl_policy = contains(local.tls_protocols, each.value.protocol) ? var.ssl_policy : null
 
   default_action {
     type             = "forward"
@@ -139,9 +130,11 @@ resource "aws_lb_listener" "app_listener" {
   }
 
   lifecycle {
+    create_before_destroy = true
+
     precondition {
-      condition     = var.listener_protocol == "HTTPS" ? var.certificate_arn != null : true
-      error_message = "VALIDATION: certificate_arn must be provided when listener_protocol is HTTPS."
+      condition     = contains(local.tls_protocols, each.value.protocol) ? var.certificate_arn != null : true
+      error_message = "certificate_arn must be provided for TLS-based listeners."
     }
   }
 }

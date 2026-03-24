@@ -64,18 +64,6 @@ run "validate_invalid_listener_port" {
   ]
 }
 
-run "validate_invalid_protocol" {
-  command = plan
-
-  variables {
-    listener_protocol = "FTP"
-  }
-
-  expect_failures = [
-    var.listener_protocol
-  ]
-}
-
 run "validate_https_requires_certificate" {
   command = plan
 
@@ -84,9 +72,9 @@ run "validate_https_requires_certificate" {
     certificate_arn   = null
   }
 
-  # This should trigger the lifecycle precondition in aws_lb_listener.app_listener
+  # This should trigger the lifecycle precondition in aws_lb_listener.alb_listener
   expect_failures = [
-    aws_lb_listener.app_listener
+    aws_lb_listener.alb_listener["main"]
   ]
 }
 

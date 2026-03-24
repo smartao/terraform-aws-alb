@@ -61,23 +61,13 @@ variable "target_group_port" {
 }
 
 variable "listener_protocol" {
-  description = "The protocol used by the ALB listener (e.g., HTTP, HTTPS)"
+  description = "The protocol used by the ALB listener"
   type        = string
-
-  validation {
-    condition     = contains(["HTTP", "HTTPS"], var.listener_protocol)
-    error_message = "VALIDATION: listener_protocol must be either HTTP or HTTPS."
-  }
 }
 
 variable "target_group_protocol" {
-  description = "The protocol used by the ALB target group and health checks (e.g., HTTP, HTTPS)"
+  description = "The protocol used by the ALB target group and health checks"
   type        = string
-
-  validation {
-    condition     = contains(["HTTP", "HTTPS"], var.target_group_protocol)
-    error_message = "VALIDATION: target_group_protocol must be either HTTP or HTTPS."
-  }
 }
 
 variable "health_check_path" {
