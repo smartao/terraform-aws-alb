@@ -126,7 +126,7 @@ No modules.
 | Name | Type |
 |------|------|
 | [aws_lb.alb](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb) | resource |
-| [aws_lb_listener.app_listener](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener) | resource |
+| [aws_lb_listener.alb_listener](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener) | resource |
 | [aws_lb_target_group.app_target_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group) | resource |
 | [aws_security_group.sg_alb](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group_rule.allow_alb_to_app_targets](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
@@ -156,13 +156,13 @@ No modules.
 | <a name="input_healthy_threshold"></a> [healthy\_threshold](#input\_healthy\_threshold) | Number of consecutive successful health checks required before considering a target healthy | `number` | `2` | no |
 | <a name="input_internal"></a> [internal](#input\_internal) | If true, the LB will be internal. If false, the LB will be public-facing. | `bool` | `true` | no |
 | <a name="input_listener_port"></a> [listener\_port](#input\_listener\_port) | The port on which the ALB listener accepts connections | `number` | n/a | yes |
-| <a name="input_listener_protocol"></a> [listener\_protocol](#input\_listener\_protocol) | The protocol used by the ALB listener (e.g., HTTP, HTTPS) | `string` | n/a | yes |
+| <a name="input_listener_protocol"></a> [listener\_protocol](#input\_listener\_protocol) | The protocol used by the ALB listener | `string` | n/a | yes |
 | <a name="input_name_prefix"></a> [name\_prefix](#input\_name\_prefix) | Prefix for naming resources | `string` | n/a | yes |
 | <a name="input_security_group_ids"></a> [security\_group\_ids](#input\_security\_group\_ids) | Additional security group IDs to attach to the ALB, or the full list when create\_security\_group is false | `list(string)` | `[]` | no |
 | <a name="input_ssl_policy"></a> [ssl\_policy](#input\_ssl\_policy) | SSL policy for the HTTPS listener | `string` | `"ELBSecurityPolicy-TLS13-1-2-2021-06"` | no |
 | <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | A list of subnet IDs to attach to the Load Balancer. Use public subnets for public-facing LBs and private subnets for internal LBs. | `list(string)` | n/a | yes |
 | <a name="input_target_group_port"></a> [target\_group\_port](#input\_target\_group\_port) | The port on which the application targets receive traffic | `number` | n/a | yes |
-| <a name="input_target_group_protocol"></a> [target\_group\_protocol](#input\_target\_group\_protocol) | The protocol used by the ALB target group and health checks (e.g., HTTP, HTTPS) | `string` | n/a | yes |
+| <a name="input_target_group_protocol"></a> [target\_group\_protocol](#input\_target\_group\_protocol) | The protocol used by the ALB target group and health checks | `string` | n/a | yes |
 | <a name="input_target_type"></a> [target\_type](#input\_target\_type) | The type of target that you must specify when registering targets with this target group. (e.g., instance, ip, lambda) | `string` | `"instance"` | no |
 | <a name="input_unhealthy_threshold"></a> [unhealthy\_threshold](#input\_unhealthy\_threshold) | Number of consecutive failed health checks required before considering a target unhealthy | `number` | `2` | no |
 | <a name="input_vpc_cidr_block"></a> [vpc\_cidr\_block](#input\_vpc\_cidr\_block) | The VPC CIDR block used as a fallback when explicit ALB security group CIDR rules are not provided. If not provided, it will be automatically resolved from the vpc\_id. | `string` | `null` | no |
@@ -174,7 +174,7 @@ No modules.
 |------|-------------|
 | <a name="output_alb_arn"></a> [alb\_arn](#output\_alb\_arn) | The ARN of the Application Load Balancer |
 | <a name="output_alb_dns_name"></a> [alb\_dns\_name](#output\_alb\_dns\_name) | The DNS name of the Application Load Balancer |
-| <a name="output_alb_listener_arn"></a> [alb\_listener\_arn](#output\_alb\_listener\_arn) | The ARN of the ALB Listener |
+| <a name="output_alb_listener_arn"></a> [alb\_listener\_arn](#output\_alb\_listener\_arn) | The ARN of the main ALB Listener |
 | <a name="output_app_target_group_arn"></a> [app\_target\_group\_arn](#output\_app\_target\_group\_arn) | The ARN of the ALB Target Group for the application |
 | <a name="output_sg_alb_id"></a> [sg\_alb\_id](#output\_sg\_alb\_id) | The ID of the Security Group for the Application Load Balancer |
 <!-- END_TF_DOCS -->
