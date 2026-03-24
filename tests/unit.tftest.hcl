@@ -74,7 +74,7 @@ run "validate_https_requires_certificate" {
 
   # This should trigger the lifecycle precondition in aws_lb_listener.alb_listener
   expect_failures = [
-    aws_lb_listener.alb_listener["main"]
+    aws_lb_listener.alb_listener["HTTPS-80"]
   ]
 }
 

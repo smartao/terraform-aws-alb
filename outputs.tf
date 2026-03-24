@@ -20,5 +20,5 @@ output "sg_alb_id" {
 
 output "alb_listener_arn" {
   description = "The ARN of the main ALB Listener"
-  value       = aws_lb_listener.alb_listener["main"].arn
+  value       = values(aws_lb_listener.alb_listener)[0].arn
 }
