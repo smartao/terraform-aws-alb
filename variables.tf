@@ -61,12 +61,12 @@ variable "target_group_port" {
 }
 
 variable "listener_protocol" {
-  description = "The protocol used by the ALB listener"
+  description = "The protocol used by the ALB listener. For ALB use cases, this is typically HTTP or HTTPS."
   type        = string
 }
 
 variable "target_group_protocol" {
-  description = "The protocol used by the ALB target group and health checks"
+  description = "The protocol used by the ALB target group and health checks. For ALB use cases, this is typically HTTP or HTTPS."
   type        = string
 }
 
@@ -137,7 +137,7 @@ variable "unhealthy_threshold" {
 }
 
 variable "target_type" {
-  description = "The type of target that you must specify when registering targets with this target group. (e.g., instance, ip, lambda)"
+  description = "The type of target to register in the target group. This module is intended for ALB workloads using instance or ip targets."
   type        = string
   default     = "instance"
 

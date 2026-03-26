@@ -2,16 +2,16 @@
 
 # 📦 terraform-aws-alb
 
-This Terraform module provides a flexible and production-ready solution for deploying an **AWS Application Load Balancer (ALB)**. It handles the creation of the ALB, target groups, listeners, and a dedicated security group with configurable ingress/egress rules for enhanced security.
+This Terraform module provides a flexible and production-ready solution for deploying an **AWS Application Load Balancer (ALB)**. It handles the creation of the ALB, a target group, a listener, and an optional dedicated security group with configurable ingress/egress rules for enhanced security.
 
 This module is designed for reuse through the HashiCorp Registry and provides a robust starting point for exposing applications within your VPC.
 
 ## ⚙️ Features
 
-- **Security First**: Automatically creates a dedicated security group for the ALB with strict rules for listener access and target communication.
+- **Security First**: Optionally creates a dedicated security group for the ALB with strict rules for listener access and target communication.
 - **Flexible Networking**: Supports both internal and external (public-facing) load balancers.
-- **Protocol Support**: Fully supports HTTP and HTTPS (ACM certificate required for HTTPS) listeners.
-- **Health Checks**: Configurable health checks for the target group to ensure traffic is only routed to healthy instances.
+- **Protocol Support**: Supports HTTP and HTTPS listeners, with ACM certificate support for HTTPS.
+- **Health Checks**: Configurable health checks for the target group to ensure traffic is only routed to healthy targets.
 - **Scalability**: Designed to be integrated with existing VPCs and subnets.
 - **Production Ready**: Includes advanced settings like deletion protection, HTTP/2, and drop invalid headers.
 
@@ -20,8 +20,8 @@ This module is designed for reuse through the HashiCorp Registry and provides a 
 The module creates:
 
 - 1 Application Load Balancer
-- 1 Dedicated Security Group (with configurable ingress/egress rules)
-- 1 Target Group (Instance, IP, or Lambda)
+- 0 or 1 dedicated Security Group (with configurable ingress/egress rules)
+- 1 Target Group for `instance` or `ip` targets
 - 1 Listener (HTTP or HTTPS)
 
 ## 🚀 Quick Start
@@ -62,14 +62,12 @@ terraform init
 terraform plan
 ```
 
-Additional notes for the example are documented in [examples/simple/README.md](examples/simple/README.md).
-
 ## 📑 Requirements and Assumptions
 
 - `subnet_ids` must contain at least two subnets in different Availability Zones.
 - `name_prefix` must be 25 characters or fewer (to accommodate derived AWS resource names).
-- `listener_protocol` and `target_group_protocol` must be either `HTTP` or `HTTPS`.
-- `target_type` must be either `instance`, `ip`, or `lambda`.
+- The module is intended for ALB use cases with HTTP/HTTPS traffic.
+- `target_type` should be `instance` or `ip`.
 - `health_check_path` must start with `/`.
 - `health_check_timeout` must be less than `health_check_interval`.
 - When using `HTTPS`, a valid `certificate_arn` must be provided.
@@ -86,7 +84,7 @@ All resources receive these baseline tags:
 ## 📄 Operational Notes
 
 - **Health Checks**: Are performed by the ALB. Ensure your application is configured to respond on the path and port specified.
-- **Security Groups**: By default, the module creates a security group that allows traffic from the VPC CIDR or specific CIDRs/SGs you provide.
+- **Security Groups**: By default, the module creates a security group that allows traffic from the VPC CIDR or from specific CIDRs/security groups you provide. You can disable this behavior with `create_security_group = false` and attach your own security groups via `security_group_ids`.
 - **ACM Certificates**: For HTTPS, you must have an existing certificate in AWS Certificate Manager.
 - **Deletion Protection**: Recommended for production environments.
 
@@ -156,14 +154,14 @@ No modules.
 | <a name="input_healthy_threshold"></a> [healthy\_threshold](#input\_healthy\_threshold) | Number of consecutive successful health checks required before considering a target healthy | `number` | `2` | no |
 | <a name="input_internal"></a> [internal](#input\_internal) | If true, the LB will be internal. If false, the LB will be public-facing. | `bool` | `true` | no |
 | <a name="input_listener_port"></a> [listener\_port](#input\_listener\_port) | The port on which the ALB listener accepts connections | `number` | n/a | yes |
-| <a name="input_listener_protocol"></a> [listener\_protocol](#input\_listener\_protocol) | The protocol used by the ALB listener | `string` | n/a | yes |
+| <a name="input_listener_protocol"></a> [listener\_protocol](#input\_listener\_protocol) | The protocol used by the ALB listener. For ALB use cases, this is typically HTTP or HTTPS. | `string` | n/a | yes |
 | <a name="input_name_prefix"></a> [name\_prefix](#input\_name\_prefix) | Prefix for naming resources | `string` | n/a | yes |
 | <a name="input_security_group_ids"></a> [security\_group\_ids](#input\_security\_group\_ids) | Additional security group IDs to attach to the ALB, or the full list when create\_security\_group is false | `list(string)` | `[]` | no |
 | <a name="input_ssl_policy"></a> [ssl\_policy](#input\_ssl\_policy) | SSL policy for the HTTPS listener | `string` | `"ELBSecurityPolicy-TLS13-1-2-2021-06"` | no |
 | <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | A list of subnet IDs to attach to the Load Balancer. Use public subnets for public-facing LBs and private subnets for internal LBs. | `list(string)` | n/a | yes |
 | <a name="input_target_group_port"></a> [target\_group\_port](#input\_target\_group\_port) | The port on which the application targets receive traffic | `number` | n/a | yes |
-| <a name="input_target_group_protocol"></a> [target\_group\_protocol](#input\_target\_group\_protocol) | The protocol used by the ALB target group and health checks | `string` | n/a | yes |
-| <a name="input_target_type"></a> [target\_type](#input\_target\_type) | The type of target that you must specify when registering targets with this target group. (e.g., instance, ip, lambda) | `string` | `"instance"` | no |
+| <a name="input_target_group_protocol"></a> [target\_group\_protocol](#input\_target\_group\_protocol) | The protocol used by the ALB target group and health checks. For ALB use cases, this is typically HTTP or HTTPS. | `string` | n/a | yes |
+| <a name="input_target_type"></a> [target\_type](#input\_target\_type) | The type of target to register in the target group. This module is intended for ALB workloads using instance or ip targets. | `string` | `"instance"` | no |
 | <a name="input_unhealthy_threshold"></a> [unhealthy\_threshold](#input\_unhealthy\_threshold) | Number of consecutive failed health checks required before considering a target unhealthy | `number` | `2` | no |
 | <a name="input_vpc_cidr_block"></a> [vpc\_cidr\_block](#input\_vpc\_cidr\_block) | The VPC CIDR block used as a fallback when explicit ALB security group CIDR rules are not provided. If not provided, it will be automatically resolved from the vpc\_id. | `string` | `null` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | The ID of the VPC | `string` | n/a | yes |
